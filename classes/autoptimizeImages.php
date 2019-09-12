@@ -119,6 +119,12 @@ class autoptimizeImages
                     10,
                     0
                 );
+                add_action(
+                    'wp_header',
+                    array( $this, 'add_lazyload_css_header' ),
+                    10,
+                    0
+                );
             }
             return;
         }
@@ -158,6 +164,10 @@ class autoptimizeImages
             add_action(
                 'wp_footer',
                 array( $this, 'add_lazyload_js_footer' )
+            );
+            add_action(
+                'wp_header',
+                array( $this, 'add_lazyload_css_header' )
             );
         }
     }
@@ -736,6 +746,11 @@ class autoptimizeImages
         return $tag;
     }
 
+    public function add_lazyload_css_header() {
+        // Adds lazyload CSS to header, using echo because wp_enqueue_script seems not to support pushing attributes (async).
+        echo apply_filters( 'autoptimize_filter_imgopt_lazyload_cssoutput', '<style>.lazyload,.lazyloading{opacity:0;}.lazyloaded{opacity:1;transition:opacity 300ms;}</style><noscript><style>.lazyload{display:none;}</style></noscript>' );
+    }
+
     public function add_lazyload_js_footer() {
         // The JS will by default be excluded form autoptimization but this can be changed with a filter.
         $noptimize_flag = '';
@@ -743,8 +758,7 @@ class autoptimizeImages
             $noptimize_flag = ' data-noptimize="1"';
         }
 
-        // Adds lazyload CSS & JS to footer, using echo because wp_enqueue_script seems not to support pushing attributes (async).
-        echo apply_filters( 'autoptimize_filter_imgopt_lazyload_cssoutput', '<style>.lazyload,.lazyloading{opacity:0;}.lazyloaded{opacity:1;transition:opacity 300ms;}</style><noscript><style>.lazyload{display:none;}</style></noscript>' );
+        // Adds lazyload JS to footer, using echo because wp_enqueue_script seems not to support pushing attributes (async).
         echo apply_filters( 'autoptimize_filter_imgopt_lazyload_jsconfig', '<script' . $noptimize_flag . '>window.lazySizesConfig=window.lazySizesConfig||{};window.lazySizesConfig.loadMode=1;</script>' );
         echo '<script async' . $noptimize_flag . ' src=\'' . plugins_url( 'external/js/lazysizes.min.js', __FILE__ ) . '\'></script>';
 
