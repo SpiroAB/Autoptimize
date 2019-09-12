@@ -458,7 +458,7 @@ if ( function_exists( 'is_plugin_active' ) && ! is_plugin_active( 'autoptimize-c
     <div style="float:right;margin:50px 15px;"><a href="http://blog.futtta.be/2013/10/21/do-not-donate-to-me/" target="_blank"><img width="100px" height="85px" src="<?php echo plugins_url().'/'.plugin_basename(dirname(__FILE__)).'/external/do_not_donate_smallest.png'; ?>" title="<?php _e("Do not donate for this plugin!","autoptimize"); ?>"></a></div>
 </div>
 
-<script type="text/javascript">
+<script>
     var feed = new Array;
     feed[1]="autoptimizefeed";
     feed[2]="wordpressfeed";
